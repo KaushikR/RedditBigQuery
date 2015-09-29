@@ -1,0 +1,11 @@
+# Queries domains from /r/India and lists them by count
+
+SELECT domain, COUNT(*) count, ROUND(AVG(score), 1) avg_score, ROUND(AVG(num_comments), 1) avg_comments
+FROM [fh-bigquery:reddit_posts.full_corpus_201509]
+WHERE YEAR(SEC_TO_TIMESTAMP(created))=2015
+AND NOT domain CONTAINS 'self.'
+AND subreddit CONTAINS 'india'
+GROUP BY 1
+HAVING count>0
+ORDER BY 2 DESC
+LIMIT 100
